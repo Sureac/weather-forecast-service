@@ -28,7 +28,7 @@ Your version of this feature should be able to show:
 - wind speed, in m/s
   for any event that starts in the next 7 days and has a location set.
 
-The met.no Located Forecast API should be used to provide weather forecast information.
+The [met.no Located Forecast API](https://api.met.no/weatherapi/locationforecast/2.0/documentation) should be used to provide weather forecast information.
 
 Remember, weather forecasts change over time so the forecast information shown to users should be no more than 2 hours
 old.
@@ -39,7 +39,7 @@ old.
 - Every Spond event has a start timestamp and an end timestamp, both in UTC, which are available to the app. Events
 typically last for up to 2 hours.
 - The event screen is opened, on relevant events, up to 80 times per second at peak times.
-- Consider the locationforecast API terms of service and how that might impact the design of your solution.
+- Consider the [locationforecast API terms of service](https://api.met.no/doc/TermsOfService) and how that might impact the design of your solution.
 - We prefer that you do not use an AI assistant for this code assignment. If you choose to use one anyway, please explain
 why and how you used it.
 
