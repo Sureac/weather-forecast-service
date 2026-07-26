@@ -41,7 +41,13 @@ public class ForecastController {
                             schema = @Schema(implementation = ProblemDetail.class)
                     )
             ),
-            @ApiResponse(responseCode = "401", description = "Missing or invalid credentials")
+            @ApiResponse(responseCode = "401",
+                    description = "Missing or invalid credentials",
+                    content = @Content(
+                            mediaType = "application/problem+json",
+                            schema = @Schema(implementation = ProblemDetail.class)
+                    )
+            )
     })
     @GetMapping
     public ForecastResponse getForecast(
