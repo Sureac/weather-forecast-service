@@ -1,4 +1,4 @@
-package io.github.ao.spond.weatherforecastservice.forecast;
+package io.github.ao.spond.weatherforecastservice.api.dto;
 
 import java.math.BigDecimal;
 import java.time.Instant;

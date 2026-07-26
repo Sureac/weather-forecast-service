@@ -1,10 +1,13 @@
-package io.github.ao.spond.weatherforecastservice.forecast;
+package io.github.ao.spond.weatherforecastservice.api;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -114,6 +117,16 @@ class ForecastControllerTest {
         mockMvc.perform(get(PATH)
                         .param("lon", "10.7522")
                         .param("time", TIME))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void rejectsEventBeyondForecastWindow() throws Exception {
+        String tooFar = Instant.now().plus(8, ChronoUnit.DAYS).toString();
+        mockMvc.perform(get(PATH)
+                        .param("lat", "59.9139")
+                        .param("lon", "10.7522")
+                        .param("time", tooFar))
                 .andExpect(status().isBadRequest());
     }
 

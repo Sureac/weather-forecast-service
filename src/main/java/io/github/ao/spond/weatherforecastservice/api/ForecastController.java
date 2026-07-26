@@ -1,18 +1,24 @@
-package io.github.ao.spond.weatherforecastservice.forecast;
+package io.github.ao.spond.weatherforecastservice.api;
 
+import io.github.ao.spond.weatherforecastservice.api.errorhandling.ForecastWindowException;
+import io.github.ao.spond.weatherforecastservice.api.dto.ForecastResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
+import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.Instant;
 
 @RestController
@@ -20,13 +26,21 @@ import java.time.Instant;
 @Tag(name = "Forecast", description = "Weather forecast for a Spond event location and time")
 public class ForecastController {
 
+    private static final Duration FORECAST_HORIZON = Duration.ofDays(7);
+
     @Operation(
             summary = "Get the forecast for an event",
             description = "Returns air temperature (degrees Celsius) and wind speed (m/s) for the given location at the " +
                     "event start time. The event must start within the next 7 days.")
     @ApiResponses({
-            @ApiResponse(responseCode = "400", description = "Invalid input: coordinate out of range, malformed value, " +
-                    "missing parameter, an event time that is not a UTC instant, or an event more than 7 days in the future"),
+            @ApiResponse(responseCode = "400",
+                    description = "Invalid input: coordinate out of range, malformed value, missing parameter, an event " +
+                            "time that is not a UTC instant, or an event more than 7 days in the future.",
+                    content = @Content(
+                            mediaType = "application/problem+json",
+                            schema = @Schema(implementation = ProblemDetail.class)
+                    )
+            ),
             @ApiResponse(responseCode = "401", description = "Missing or invalid credentials")
     })
     @GetMapping
@@ -38,9 +52,12 @@ public class ForecastController {
             @Parameter(description = "Event start time, ISO-8601 instant in UTC", example = "2026-07-27T18:00:00Z")
             @RequestParam Instant time) {
 
+        if (time.isAfter(Instant.now().plus(FORECAST_HORIZON))) {
+            throw new ForecastWindowException("Event time must be within the next 7 days");
+        }
+
         // AO 2026-07-26: TODO: call forecast service
         // AO 2026-07-26: TODO: make sure that only 4 dp is used in domain for coorrdinates
-        // AO 2026-07-26: TODO: make sure that time of event is not more than 7d in the future (global exception handler?)
         return new ForecastResponse(BigDecimal.ZERO, BigDecimal.ZERO, time, time);
     }
 }
