@@ -2,7 +2,6 @@ package io.github.ao.spond.weatherforecastservice.forecast;
 
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,7 +12,6 @@ import java.time.Instant;
 
 @RestController
 @RequestMapping("/api/v1/forecast")
-@Validated
 public class ForecastController {
 
     @GetMapping
