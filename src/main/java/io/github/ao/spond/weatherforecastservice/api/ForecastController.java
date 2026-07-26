@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.FutureOrPresent;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +27,7 @@ import java.time.Instant;
 @Tag(name = "Forecast", description = "Weather forecast for a Spond event location and time")
 public class ForecastController {
 
-    private static final Duration FORECAST_HORIZON = Duration.ofDays(7);
+    private static final Duration FORECAST_WINDOW = Duration.ofDays(7);
 
     @Operation(
             summary = "Get the forecast for an event",
@@ -35,7 +36,7 @@ public class ForecastController {
     @ApiResponses({
             @ApiResponse(responseCode = "400",
                     description = "Invalid input: coordinate out of range, malformed value, missing parameter, an event " +
-                            "time that is not a UTC instant, or an event more than 7 days in the future.",
+                            "time that is not a UTC instant, an event in the past, or an event more than 7 days in the future.",
                     content = @Content(
                             mediaType = "application/problem+json",
                             schema = @Schema(implementation = ProblemDetail.class)
@@ -56,9 +57,9 @@ public class ForecastController {
             @Parameter(description = "Event longitude in decimal degrees", example = "10.7522")
             @RequestParam @DecimalMin("-180") @DecimalMax("180") BigDecimal lon,
             @Parameter(description = "Event start time, ISO-8601 instant in UTC", example = "2026-07-27T18:00:00Z")
-            @RequestParam Instant time) {
+            @RequestParam @FutureOrPresent Instant time) {
 
-        if (time.isAfter(Instant.now().plus(FORECAST_HORIZON))) {
+        if (time.isAfter(Instant.now().plus(FORECAST_WINDOW))) {
             throw new ForecastWindowException("Event time must be within the next 7 days");
         }
 

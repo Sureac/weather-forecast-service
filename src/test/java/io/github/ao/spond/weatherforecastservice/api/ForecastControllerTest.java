@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ForecastControllerTest {
 
     private static final String PATH = "/api/v1/forecast";
-    private static final String TIME = "2026-07-27T18:00:00Z";
+    private static final String TIME = Instant.now().plus(2, ChronoUnit.DAYS).toString();
 
     @Autowired
     private MockMvc mockMvc;
@@ -127,6 +127,16 @@ class ForecastControllerTest {
                         .param("lat", "59.9139")
                         .param("lon", "10.7522")
                         .param("time", tooFar))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void rejectsPastEvent() throws Exception {
+        String past = Instant.now().minus(1, ChronoUnit.DAYS).toString();
+        mockMvc.perform(get(PATH)
+                        .param("lat", "59.9139")
+                        .param("lon", "10.7522")
+                        .param("time", past))
                 .andExpect(status().isBadRequest());
     }
 
