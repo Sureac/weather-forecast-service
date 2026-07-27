@@ -1,0 +1,11 @@
+GET https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=59.9114&lon=10.7579
+User-Agent: weather-forecast-service github.com/Sureac/weather-forecast-service
+Accept: application/json
+
+### forecast for Oslo (needs the app running + Basic Auth); event time is set 1 day ahead
+< {%
+    request.variables.set("eventTime", new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString());
+%}
+GET http://localhost:8080/api/v1/forecast?lat=59.9114&lon=10.7579&time={{eventTime}}
+Authorization: Basic spond spond-secret
+Accept: application/json

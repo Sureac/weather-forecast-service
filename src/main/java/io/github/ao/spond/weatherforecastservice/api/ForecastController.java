@@ -60,13 +60,27 @@ public class ForecastController {
                             mediaType = "application/problem+json",
                             schema = @Schema(implementation = ProblemDetail.class)
                     )
+            ),
+            @ApiResponse(responseCode = "502",
+                    description = "The upstream weather provider is unavailable or returned no data",
+                    content = @Content(
+                            mediaType = "application/problem+json",
+                            schema = @Schema(implementation = ProblemDetail.class)
+                    )
+            ),
+            @ApiResponse(responseCode = "500",
+                    description = "Unexpected server error",
+                    content = @Content(
+                            mediaType = "application/problem+json",
+                            schema = @Schema(implementation = ProblemDetail.class)
+                    )
             )
     })
     @GetMapping
     public ForecastResponse getForecast(
-            @Parameter(description = "Event latitude in decimal degrees", example = "59.9139")
+            @Parameter(description = "Event latitude in decimal degrees", example = "59.9114")
             @RequestParam @DecimalMin("-90") @DecimalMax("90") BigDecimal lat,
-            @Parameter(description = "Event longitude in decimal degrees", example = "10.7522")
+            @Parameter(description = "Event longitude in decimal degrees", example = "10.7579")
             @RequestParam @DecimalMin("-180") @DecimalMax("180") BigDecimal lon,
             @Parameter(description = "Event start time, ISO-8601 instant in UTC", example = "2026-07-27T18:00:00Z")
             @RequestParam @FutureOrPresent Instant time
