@@ -4,7 +4,7 @@ import io.github.ao.spond.weatherforecastservice.provider.WeatherForecastProvide
 import io.github.ao.spond.weatherforecastservice.model.Coordinates;
 import io.github.ao.spond.weatherforecastservice.model.Forecast;
 import io.github.ao.spond.weatherforecastservice.model.ForecastWindowException;
-import io.github.ao.spond.weatherforecastservice.repository.ForecastStore;
+import io.github.ao.spond.weatherforecastservice.store.ForecastStore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

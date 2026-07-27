@@ -1,5 +1,6 @@
-package io.github.ao.spond.weatherforecastservice.repository;
+package io.github.ao.spond.weatherforecastservice.store.repository;
 
+import io.github.ao.spond.weatherforecastservice.store.entity.ForecastEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -9,7 +10,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Optional;
 
-interface ForecastRepository extends JpaRepository<ForecastEntity, Long> {
+public interface ForecastRepository extends JpaRepository<ForecastEntity, Long> {
 
     Optional<ForecastEntity> findByLatitudeAndLongitudeAndEventTime(BigDecimal latitude, BigDecimal longitude, Instant eventTime);
 

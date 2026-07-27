@@ -1,4 +1,4 @@
-package io.github.ao.spond.weatherforecastservice.repository;
+package io.github.ao.spond.weatherforecastservice.store;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
@@ -16,7 +16,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Primary
 @Component
-class CachingForecastStore implements ForecastStore {
+public class CachingForecastStore implements ForecastStore {
 
     // AO 2026-07-27: assume that at max ~10k concurrent events can happen at the same time
     private static final int MAX_ENTRIES = 10_000;
@@ -31,7 +31,7 @@ class CachingForecastStore implements ForecastStore {
             .expireAfter(jitteredExpiry())
             .build();
 
-    CachingForecastStore(JpaForecastStore fallback) {
+    public CachingForecastStore(JpaForecastStore fallback) {
         this.fallback = fallback;
     }
 

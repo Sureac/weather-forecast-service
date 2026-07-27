@@ -1,4 +1,4 @@
-package io.github.ao.spond.weatherforecastservice.user;
+package io.github.ao.spond.weatherforecastservice.store.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,7 +15,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-class AppUserEntity {
+public class AppUserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

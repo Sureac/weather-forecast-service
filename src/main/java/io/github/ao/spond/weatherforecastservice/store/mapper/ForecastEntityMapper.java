@@ -1,7 +1,7 @@
-package io.github.ao.spond.weatherforecastservice.repository.mapper;
+package io.github.ao.spond.weatherforecastservice.store.mapper;
 
 import io.github.ao.spond.weatherforecastservice.model.Forecast;
-import io.github.ao.spond.weatherforecastservice.repository.ForecastEntity;
+import io.github.ao.spond.weatherforecastservice.store.entity.ForecastEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

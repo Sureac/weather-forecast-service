@@ -1,5 +1,6 @@
-package io.github.ao.spond.weatherforecastservice.repository;
+package io.github.ao.spond.weatherforecastservice.job;
 
+import io.github.ao.spond.weatherforecastservice.store.repository.ForecastRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

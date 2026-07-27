@@ -1,5 +1,6 @@
-package io.github.ao.spond.weatherforecastservice.user;
+package io.github.ao.spond.weatherforecastservice.security;
 
+import io.github.ao.spond.weatherforecastservice.store.repository.AppUserRepository;
 import org.jspecify.annotations.NonNull;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

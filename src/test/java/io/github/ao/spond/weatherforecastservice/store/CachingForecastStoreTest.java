@@ -1,4 +1,4 @@
-package io.github.ao.spond.weatherforecastservice.repository;
+package io.github.ao.spond.weatherforecastservice.store;
 
 import io.github.ao.spond.weatherforecastservice.model.Coordinates;
 import io.github.ao.spond.weatherforecastservice.model.Forecast;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class CachingForecastStoreTest {
+public class CachingForecastStoreTest {
 
     private static final Coordinates OSLO = new Coordinates(new BigDecimal("59.9114"), new BigDecimal("10.7579"));
     private static final Instant EVENT_HOUR = Instant.parse("2026-07-28T18:00:00Z");

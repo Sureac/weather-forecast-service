@@ -1,4 +1,4 @@
-package io.github.ao.spond.weatherforecastservice.repository;
+package io.github.ao.spond.weatherforecastservice.store.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

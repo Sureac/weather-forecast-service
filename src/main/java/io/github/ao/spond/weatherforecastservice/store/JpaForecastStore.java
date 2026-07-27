@@ -1,8 +1,9 @@
-package io.github.ao.spond.weatherforecastservice.repository;
+package io.github.ao.spond.weatherforecastservice.store;
 
 import io.github.ao.spond.weatherforecastservice.model.Coordinates;
 import io.github.ao.spond.weatherforecastservice.model.Forecast;
-import io.github.ao.spond.weatherforecastservice.repository.mapper.ForecastEntityMapper;
+import io.github.ao.spond.weatherforecastservice.store.mapper.ForecastEntityMapper;
+import io.github.ao.spond.weatherforecastservice.store.repository.ForecastRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,7 +11,7 @@ import java.time.Instant;
 import java.util.Optional;
 
 @Component
-class JpaForecastStore implements ForecastStore {
+public class JpaForecastStore implements ForecastStore {
 
     private final ForecastRepository repository;
     private final ForecastEntityMapper mapper;

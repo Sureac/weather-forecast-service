@@ -1,6 +1,7 @@
-package io.github.ao.spond.weatherforecastservice.repository;
+package io.github.ao.spond.weatherforecastservice.store.repository;
 
 import io.github.ao.spond.weatherforecastservice.TestcontainersConfiguration;
+import io.github.ao.spond.weatherforecastservice.store.entity.ForecastEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
