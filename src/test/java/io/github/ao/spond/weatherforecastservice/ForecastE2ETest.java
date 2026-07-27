@@ -31,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Import(TestcontainersConfiguration.class)
 class ForecastE2ETest {
 
-    private static final String FORECAST = "/api/v1/forecast?lat=59.9114&lon=10.7579&time={time}";
+    private static final String FORECAST = "/api/v1/forecasts?lat=59.9114&lon=10.7579&time={time}";
     private static final String COMPACT_PATH = "/weatherapi/locationforecast/2.0/compact";
     private static final String COMPACT_RESPONSE = readFixture();
 

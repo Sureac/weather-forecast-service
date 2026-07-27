@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(addFilters = false)
 class ForecastControllerTest {
 
-    private static final String PATH = "/api/v1/forecast";
+    private static final String PATH = "/api/v1/forecasts";
     private static final String TIME = Instant.now().plus(2, ChronoUnit.DAYS).toString();
 
     @Autowired

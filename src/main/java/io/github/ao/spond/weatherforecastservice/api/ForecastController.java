@@ -25,7 +25,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 
 @RestController
-@RequestMapping("/api/v1/forecast")
+@RequestMapping("/api/v1/forecasts")
 @Tag(name = "Forecast", description = "Weather forecast for a Spond event location and time")
 public class ForecastController {
 
