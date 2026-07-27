@@ -1,10 +1,12 @@
-package io.github.ao.spond.weatherforecastservice.client.metno;
+package io.github.ao.spond.weatherforecastservice.provider.metno;
 
-import io.github.ao.spond.weatherforecastservice.client.metno.dto.MetNoForecastResponse.InstantDetails;
-import io.github.ao.spond.weatherforecastservice.client.metno.dto.MetNoForecastResponse.InstantForecast;
-import io.github.ao.spond.weatherforecastservice.client.metno.dto.MetNoForecastResponse.TimeseriesData;
-import io.github.ao.spond.weatherforecastservice.client.metno.dto.MetNoForecastResponse.TimeseriesEntry;
+import io.github.ao.spond.weatherforecastservice.provider.metno.dto.MetNoForecastResponse.InstantDetails;
+import io.github.ao.spond.weatherforecastservice.provider.metno.dto.MetNoForecastResponse.InstantForecast;
+import io.github.ao.spond.weatherforecastservice.provider.metno.dto.MetNoForecastResponse.TimeseriesData;
+import io.github.ao.spond.weatherforecastservice.provider.metno.dto.MetNoForecastResponse.TimeseriesEntry;
+import io.github.ao.spond.weatherforecastservice.provider.metno.mapper.MetNoForecastMapper;
 import io.github.ao.spond.weatherforecastservice.model.Forecast;
+import io.github.ao.spond.weatherforecastservice.provider.metno.mapper.MetNoForecastMapperImpl;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

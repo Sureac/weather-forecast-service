@@ -1,6 +1,6 @@
-package io.github.ao.spond.weatherforecastservice.client.metno;
+package io.github.ao.spond.weatherforecastservice.provider.metno.client;
 
-import io.github.ao.spond.weatherforecastservice.client.metno.dto.MetNoForecastResponse;
+import io.github.ao.spond.weatherforecastservice.provider.metno.dto.MetNoForecastResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.service.annotation.GetExchange;

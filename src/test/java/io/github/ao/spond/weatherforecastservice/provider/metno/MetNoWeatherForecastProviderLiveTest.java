@@ -1,7 +1,9 @@
-package io.github.ao.spond.weatherforecastservice.client.metno;
+package io.github.ao.spond.weatherforecastservice.provider.metno;
 
 import io.github.ao.spond.weatherforecastservice.model.Coordinates;
 import io.github.ao.spond.weatherforecastservice.model.Forecast;
+import io.github.ao.spond.weatherforecastservice.provider.metno.client.MetNoClient;
+import io.github.ao.spond.weatherforecastservice.provider.metno.mapper.MetNoForecastMapperImpl;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;

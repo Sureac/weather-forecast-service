@@ -1,4 +1,4 @@
-package io.github.ao.spond.weatherforecastservice.client.metno;
+package io.github.ao.spond.weatherforecastservice.provider.metno.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

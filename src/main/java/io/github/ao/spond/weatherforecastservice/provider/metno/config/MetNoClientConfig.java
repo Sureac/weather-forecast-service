@@ -1,5 +1,6 @@
-package io.github.ao.spond.weatherforecastservice.client.metno;
+package io.github.ao.spond.weatherforecastservice.provider.metno.config;
 
+import io.github.ao.spond.weatherforecastservice.provider.metno.client.MetNoClient;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.http.client.ClientHttpRequestFactoryBuilder;
 import org.springframework.boot.http.client.HttpClientSettings;

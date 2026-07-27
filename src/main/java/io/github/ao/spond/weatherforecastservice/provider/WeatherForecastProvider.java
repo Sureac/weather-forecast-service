@@ -1,4 +1,4 @@
-package io.github.ao.spond.weatherforecastservice.client;
+package io.github.ao.spond.weatherforecastservice.provider;
 
 import io.github.ao.spond.weatherforecastservice.model.Coordinates;
 import io.github.ao.spond.weatherforecastservice.model.Forecast;

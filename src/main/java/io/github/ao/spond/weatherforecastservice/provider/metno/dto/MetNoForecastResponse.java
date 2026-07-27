@@ -1,4 +1,4 @@
-package io.github.ao.spond.weatherforecastservice.client.metno.dto;
+package io.github.ao.spond.weatherforecastservice.provider.metno.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

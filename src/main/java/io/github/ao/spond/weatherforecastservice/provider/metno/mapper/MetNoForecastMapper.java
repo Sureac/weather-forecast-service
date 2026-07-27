@@ -1,6 +1,6 @@
-package io.github.ao.spond.weatherforecastservice.client.metno;
+package io.github.ao.spond.weatherforecastservice.provider.metno.mapper;
 
-import io.github.ao.spond.weatherforecastservice.client.metno.dto.MetNoForecastResponse.TimeseriesEntry;
+import io.github.ao.spond.weatherforecastservice.provider.metno.dto.MetNoForecastResponse.TimeseriesEntry;
 import io.github.ao.spond.weatherforecastservice.model.Forecast;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
