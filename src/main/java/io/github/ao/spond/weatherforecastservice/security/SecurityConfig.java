@@ -11,15 +11,16 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 class SecurityConfig {
 
-    private static final String[] DOC_PATHS = {
-            "/scalar", "/scalar/**", "/v3/api-docs", "/v3/api-docs/**", "/v3/api-docs.yaml"
+    private static final String[] PUBLIC_PATHS = {
+            "/scalar", "/scalar/**", "/v3/api-docs", "/v3/api-docs/**", "/v3/api-docs.yaml",
+            "/actuator/health", "/actuator/health/**"
     };
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) {
         return http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(DOC_PATHS)
+                        .requestMatchers(PUBLIC_PATHS)
                         .permitAll()
                         .anyRequest()
                         .authenticated())
