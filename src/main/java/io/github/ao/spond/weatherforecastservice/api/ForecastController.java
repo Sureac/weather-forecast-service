@@ -39,6 +39,13 @@ public class ForecastController {
             description = "Returns air temperature (degrees Celsius) and wind speed (m/s) for the given location at the " +
                     "event start time. The event must start within the next 7 days.")
     @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    description = "Forecast for the requested location and time",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ForecastResponse.class)
+                    )
+            ),
             @ApiResponse(responseCode = "400",
                     description = "Invalid input: coordinate out of range, malformed value, missing parameter, an event " +
                             "time that is not a UTC instant, an event in the past, or an event more than 7 days in the future.",
