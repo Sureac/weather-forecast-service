@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class MetNoForecastMapperTest {
 
-    private final MetNoForecastMapper mapper = new MetNoForecastMapperImpl();
+    private final MetNoForecastMapper sut = new MetNoForecastMapperImpl();
 
     @Test
     void mapsDetailsTimeAndExpiry() {
@@ -25,7 +25,7 @@ class MetNoForecastMapperTest {
                 new TimeseriesData(new InstantForecast(new InstantDetails(new BigDecimal("21.4"), new BigDecimal("3.2")))));
         Instant expiresAt = Instant.parse("2026-07-27T20:00:00Z");
 
-        Forecast forecast = mapper.toForecast(entry, expiresAt);
+        Forecast forecast = sut.toForecast(entry, expiresAt);
 
         assertThat(forecast.airTemperatureCelsius()).isEqualByComparingTo("21.4");
         assertThat(forecast.windSpeedMetersPerSecond()).isEqualByComparingTo("3.2");

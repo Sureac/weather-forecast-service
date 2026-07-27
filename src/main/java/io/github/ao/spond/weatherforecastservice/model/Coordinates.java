@@ -5,7 +5,7 @@ import java.math.RoundingMode;
 
 public record Coordinates(BigDecimal latitude, BigDecimal longitude) {
 
-    // AO 2026-07-27: met.no ToS: coordinates with >4 decimals return 403.
+    // AO 2026-07-27: met.no ToS: coordinates with >4 decimals return 403
     private static final int MET_NO_SCALE = 4;
 
     public Coordinates {

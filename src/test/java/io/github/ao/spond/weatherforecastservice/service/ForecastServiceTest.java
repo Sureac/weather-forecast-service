@@ -1,6 +1,6 @@
 package io.github.ao.spond.weatherforecastservice.service;
 
-import io.github.ao.spond.weatherforecastservice.client.WeatherForecastProvider;
+import io.github.ao.spond.weatherforecastservice.provider.WeatherForecastProvider;
 import io.github.ao.spond.weatherforecastservice.model.Coordinates;
 import io.github.ao.spond.weatherforecastservice.model.Forecast;
 import io.github.ao.spond.weatherforecastservice.model.ForecastWindowException;
@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,57 +38,59 @@ class ForecastServiceTest {
     private ForecastStore store;
 
     @InjectMocks
-    private ForecastService service;
+    private ForecastService sut;
 
     private Instant eventTime;
+    private Instant eventHour;
 
     @BeforeEach
     void setUp() {
         eventTime = Instant.now().plus(Duration.ofDays(1));
+        eventHour = eventTime.truncatedTo(ChronoUnit.HOURS);
     }
 
     @Test
     void fetchesFromProviderAndCachesOnCacheMiss() {
         Forecast fresh = forecastExpiringIn(Duration.ofHours(2));
-        when(store.find(OSLO)).thenReturn(Optional.empty());
+        when(store.find(OSLO, eventHour)).thenReturn(Optional.empty());
         when(provider.fetchForecast(OSLO, eventTime)).thenReturn(fresh);
 
-        Forecast result = service.getForecast(OSLO, eventTime);
+        Forecast result = sut.getForecast(OSLO, eventTime);
 
         assertThat(result).isEqualTo(fresh);
-        verify(store).save(OSLO, fresh);
+        verify(store).save(OSLO, eventHour, fresh);
     }
 
     @Test
     void returnsCachedForecastWhenStillFresh() {
         Forecast cached = forecastExpiringIn(Duration.ofHours(1));
-        when(store.find(OSLO)).thenReturn(Optional.of(cached));
+        when(store.find(OSLO, eventHour)).thenReturn(Optional.of(cached));
 
-        Forecast result = service.getForecast(OSLO, eventTime);
+        Forecast result = sut.getForecast(OSLO, eventTime);
 
         assertThat(result).isEqualTo(cached);
         verifyNoInteractions(provider);
-        verify(store, never()).save(any(), any());
+        verify(store, never()).save(any(), any(), any());
     }
 
     @Test
     void refetchesWhenCachedForecastExpired() {
         Forecast expired = forecastExpiringIn(Duration.ofHours(-1));
         Forecast fresh = forecastExpiringIn(Duration.ofHours(2));
-        when(store.find(OSLO)).thenReturn(Optional.of(expired));
+        when(store.find(OSLO, eventHour)).thenReturn(Optional.of(expired));
         when(provider.fetchForecast(OSLO, eventTime)).thenReturn(fresh);
 
-        Forecast result = service.getForecast(OSLO, eventTime);
+        Forecast result = sut.getForecast(OSLO, eventTime);
 
         assertThat(result).isEqualTo(fresh);
-        verify(store).save(OSLO, fresh);
+        verify(store).save(OSLO, eventHour, fresh);
     }
 
     @Test
     void rejectsEventBeyondForecastWindow() {
         Instant tooFar = Instant.now().plus(Duration.ofDays(8));
 
-        assertThatThrownBy(() -> service.getForecast(OSLO, tooFar))
+        assertThatThrownBy(() -> sut.getForecast(OSLO, tooFar))
                 .isInstanceOf(ForecastWindowException.class);
 
         verifyNoInteractions(provider, store);

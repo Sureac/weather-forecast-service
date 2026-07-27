@@ -31,10 +31,10 @@ class MetNoWeatherForecastProviderLiveTest {
                 .builderFor(RestClientAdapter.create(builder.build()))
                 .build()
                 .createClient(MetNoClient.class);
-        MetNoWeatherForecastProvider provider = new MetNoWeatherForecastProvider(client, new MetNoForecastMapperImpl());
+        MetNoWeatherForecastProvider sut = new MetNoWeatherForecastProvider(client, new MetNoForecastMapperImpl());
 
         Coordinates oslo = new Coordinates(new BigDecimal("59.9114"), new BigDecimal("10.7579"));
-        Forecast forecast = provider.fetchForecast(oslo, Instant.now().plus(Duration.ofHours(2)));
+        Forecast forecast = sut.fetchForecast(oslo, Instant.now().plus(Duration.ofHours(2)));
 
         assertThat(forecast.airTemperatureCelsius()).isNotNull();
         assertThat(forecast.windSpeedMetersPerSecond()).isNotNull();

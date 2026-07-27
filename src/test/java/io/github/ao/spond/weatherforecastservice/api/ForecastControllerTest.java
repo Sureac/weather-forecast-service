@@ -1,5 +1,6 @@
 package io.github.ao.spond.weatherforecastservice.api;
 
+import io.github.ao.spond.weatherforecastservice.api.mapper.ForecastResponseMapperImpl;
 import io.github.ao.spond.weatherforecastservice.model.Coordinates;
 import io.github.ao.spond.weatherforecastservice.model.Forecast;
 import io.github.ao.spond.weatherforecastservice.service.ForecastService;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -20,7 +22,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ForecastController.class)
-@AutoConfigureMockMvc(addFilters = false) // skip security filter chain: these tests target validation, not auth
+@Import(ForecastResponseMapperImpl.class)
+@AutoConfigureMockMvc(addFilters = false)
 class ForecastControllerTest {
 
     private static final String PATH = "/api/v1/forecast";

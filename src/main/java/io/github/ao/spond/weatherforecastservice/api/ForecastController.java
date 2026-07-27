@@ -1,6 +1,7 @@
 package io.github.ao.spond.weatherforecastservice.api;
 
 import io.github.ao.spond.weatherforecastservice.api.dto.ForecastResponse;
+import io.github.ao.spond.weatherforecastservice.api.mapper.ForecastResponseMapper;
 import io.github.ao.spond.weatherforecastservice.model.Coordinates;
 import io.github.ao.spond.weatherforecastservice.model.Forecast;
 import io.github.ao.spond.weatherforecastservice.service.ForecastService;
@@ -29,9 +30,11 @@ import java.time.Instant;
 public class ForecastController {
 
     private final ForecastService forecastService;
+    private final ForecastResponseMapper forecastResponseMapper;
 
-    public ForecastController(ForecastService forecastService) {
+    public ForecastController(ForecastService forecastService, ForecastResponseMapper forecastResponseMapper) {
         this.forecastService = forecastService;
+        this.forecastResponseMapper = forecastResponseMapper;
     }
 
     @Operation(
@@ -86,10 +89,6 @@ public class ForecastController {
             @RequestParam @FutureOrPresent Instant time
     ) {
         Forecast forecast = forecastService.getForecast(new Coordinates(lat, lon), time);
-        return new ForecastResponse(
-                forecast.airTemperatureCelsius(),
-                forecast.windSpeedMetersPerSecond(),
-                forecast.forecastFor(),
-                forecast.expiresAt());
+        return forecastResponseMapper.toResponse(forecast);
     }
 }

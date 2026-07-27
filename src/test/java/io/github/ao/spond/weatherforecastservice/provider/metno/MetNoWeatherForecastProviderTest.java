@@ -48,7 +48,7 @@ class MetNoWeatherForecastProviderTest {
     private MetNoForecastMapper mapper;
 
     @InjectMocks
-    private MetNoWeatherForecastProvider provider;
+    private MetNoWeatherForecastProvider sut;
 
     @Test
     void selectsNearestEntryAndUsesExpiresHeader() {
@@ -57,7 +57,7 @@ class MetNoWeatherForecastProviderTest {
         when(client.getCompactForecast(any(), any())).thenReturn(responseWith(headers, ENTRY_18, ENTRY_19));
         when(mapper.toForecast(any(), any())).thenReturn(MAPPED);
 
-        Forecast result = provider.fetchForecast(OSLO, Instant.parse("2026-07-27T18:10:00Z"));
+        Forecast result = sut.fetchForecast(OSLO, Instant.parse("2026-07-27T18:10:00Z"));
 
         assertThat(result).isEqualTo(MAPPED);
         verify(mapper).toForecast(eq(ENTRY_18), eq(Instant.parse("2026-07-27T20:00:00Z")));
@@ -69,7 +69,7 @@ class MetNoWeatherForecastProviderTest {
         when(mapper.toForecast(any(), any())).thenReturn(MAPPED);
 
         Instant before = Instant.now().plus(Duration.ofHours(2));
-        provider.fetchForecast(OSLO, Instant.parse("2026-07-27T18:00:00Z"));
+        sut.fetchForecast(OSLO, Instant.parse("2026-07-27T18:00:00Z"));
         Instant after = Instant.now().plus(Duration.ofHours(2));
 
         ArgumentCaptor<Instant> expiresAt = ArgumentCaptor.forClass(Instant.class);
@@ -81,7 +81,7 @@ class MetNoWeatherForecastProviderTest {
     void throwsWhenTimeSeriesEmpty() {
         when(client.getCompactForecast(any(), any())).thenReturn(responseWith(new HttpHeaders()));
 
-        assertThatThrownBy(() -> provider.fetchForecast(OSLO, Instant.now()))
+        assertThatThrownBy(() -> sut.fetchForecast(OSLO, Instant.now()))
                 .isInstanceOf(ForecastUnavailableException.class);
         verifyNoInteractions(mapper);
     }
@@ -91,7 +91,7 @@ class MetNoWeatherForecastProviderTest {
         when(client.getCompactForecast(any(), any()))
                 .thenReturn(new ResponseEntity<>((MetNoForecastResponse) null, HttpStatus.OK));
 
-        assertThatThrownBy(() -> provider.fetchForecast(OSLO, Instant.now()))
+        assertThatThrownBy(() -> sut.fetchForecast(OSLO, Instant.now()))
                 .isInstanceOf(ForecastUnavailableException.class);
         verifyNoInteractions(mapper);
     }
@@ -100,7 +100,7 @@ class MetNoWeatherForecastProviderTest {
     void translatesTransportFailureToUnavailable() {
         when(client.getCompactForecast(any(), any())).thenThrow(new ResourceAccessException("timeout"));
 
-        assertThatThrownBy(() -> provider.fetchForecast(OSLO, Instant.now()))
+        assertThatThrownBy(() -> sut.fetchForecast(OSLO, Instant.now()))
                 .isInstanceOf(ForecastUnavailableException.class);
         verifyNoInteractions(mapper);
     }

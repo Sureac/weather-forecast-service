@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 
-// AO 2026-07-27: partial mapping of the met.no locationforecast.compact response — only the fields we consume.
+// AO 2026-07-27: partial mapping of the met.no locationforecast.compact response — only the fields we consume
 public record MetNoForecastResponse(Properties properties) {
 
     public record Properties(List<TimeseriesEntry> timeseries) {
