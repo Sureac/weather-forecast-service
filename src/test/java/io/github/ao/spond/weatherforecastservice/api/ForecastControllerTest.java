@@ -1,14 +1,21 @@
 package io.github.ao.spond.weatherforecastservice.api;
 
+import io.github.ao.spond.weatherforecastservice.model.Coordinates;
+import io.github.ao.spond.weatherforecastservice.model.Forecast;
+import io.github.ao.spond.weatherforecastservice.service.ForecastService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -22,8 +29,17 @@ class ForecastControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @MockitoBean
+    private ForecastService forecastService;
+
+    private void stubForecast() {
+        when(forecastService.getForecast(any(Coordinates.class), any(Instant.class)))
+                .thenReturn(new Forecast(BigDecimal.ZERO, BigDecimal.ZERO, Instant.now(), Instant.now()));
+    }
+
     @Test
     void acceptsValidRequest() throws Exception {
+        stubForecast();
         mockMvc.perform(get(PATH)
                         .param("lat", "59.9139")
                         .param("lon", "10.7522")
@@ -33,6 +49,7 @@ class ForecastControllerTest {
 
     @Test
     void acceptsMinBoundaryCoordinates() throws Exception {
+        stubForecast();
         mockMvc.perform(get(PATH)
                         .param("lat", "-90")
                         .param("lon", "-180")
@@ -42,6 +59,7 @@ class ForecastControllerTest {
 
     @Test
     void acceptsMaxBoundaryCoordinates() throws Exception {
+        stubForecast();
         mockMvc.perform(get(PATH)
                         .param("lat", "90")
                         .param("lon", "180")
@@ -113,30 +131,20 @@ class ForecastControllerTest {
     }
 
     @Test
-    void rejectsMissingLatitude() throws Exception {
-        mockMvc.perform(get(PATH)
-                        .param("lon", "10.7522")
-                        .param("time", TIME))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    void rejectsEventBeyondForecastWindow() throws Exception {
-        String tooFar = Instant.now().plus(8, ChronoUnit.DAYS).toString();
-        mockMvc.perform(get(PATH)
-                        .param("lat", "59.9139")
-                        .param("lon", "10.7522")
-                        .param("time", tooFar))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
     void rejectsPastEvent() throws Exception {
         String past = Instant.now().minus(1, ChronoUnit.DAYS).toString();
         mockMvc.perform(get(PATH)
                         .param("lat", "59.9139")
                         .param("lon", "10.7522")
                         .param("time", past))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void rejectsMissingLatitude() throws Exception {
+        mockMvc.perform(get(PATH)
+                        .param("lon", "10.7522")
+                        .param("time", TIME))
                 .andExpect(status().isBadRequest());
     }
 

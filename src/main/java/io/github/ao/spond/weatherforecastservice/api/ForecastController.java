@@ -1,7 +1,9 @@
 package io.github.ao.spond.weatherforecastservice.api;
 
-import io.github.ao.spond.weatherforecastservice.api.errorhandling.ForecastWindowException;
 import io.github.ao.spond.weatherforecastservice.api.dto.ForecastResponse;
+import io.github.ao.spond.weatherforecastservice.model.Coordinates;
+import io.github.ao.spond.weatherforecastservice.model.Forecast;
+import io.github.ao.spond.weatherforecastservice.service.ForecastService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -19,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
-import java.time.Duration;
 import java.time.Instant;
 
 @RestController
@@ -27,7 +28,11 @@ import java.time.Instant;
 @Tag(name = "Forecast", description = "Weather forecast for a Spond event location and time")
 public class ForecastController {
 
-    private static final Duration FORECAST_WINDOW = Duration.ofDays(7);
+    private final ForecastService forecastService;
+
+    public ForecastController(ForecastService forecastService) {
+        this.forecastService = forecastService;
+    }
 
     @Operation(
             summary = "Get the forecast for an event",
@@ -57,14 +62,13 @@ public class ForecastController {
             @Parameter(description = "Event longitude in decimal degrees", example = "10.7522")
             @RequestParam @DecimalMin("-180") @DecimalMax("180") BigDecimal lon,
             @Parameter(description = "Event start time, ISO-8601 instant in UTC", example = "2026-07-27T18:00:00Z")
-            @RequestParam @FutureOrPresent Instant time) {
-
-        if (time.isAfter(Instant.now().plus(FORECAST_WINDOW))) {
-            throw new ForecastWindowException("Event time must be within the next 7 days");
-        }
-
-        // AO 2026-07-26: TODO: call forecast service
-        // AO 2026-07-26: TODO: make sure that only 4 dp is used in domain for coorrdinates
-        return new ForecastResponse(BigDecimal.ZERO, BigDecimal.ZERO, time, time);
+            @RequestParam @FutureOrPresent Instant time
+    ) {
+        Forecast forecast = forecastService.getForecast(new Coordinates(lat, lon), time);
+        return new ForecastResponse(
+                forecast.airTemperatureCelsius(),
+                forecast.windSpeedMetersPerSecond(),
+                forecast.forecastFor(),
+                forecast.expiresAt());
     }
 }

@@ -1,4 +1,4 @@
-package io.github.ao.spond.weatherforecastservice.api.errorhandling;
+package io.github.ao.spond.weatherforecastservice.model;
 
 public class ForecastWindowException extends RuntimeException {
 

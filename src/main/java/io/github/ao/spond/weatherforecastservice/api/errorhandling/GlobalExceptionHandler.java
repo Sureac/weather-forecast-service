@@ -1,5 +1,6 @@
 package io.github.ao.spond.weatherforecastservice.api.errorhandling;
 
+import io.github.ao.spond.weatherforecastservice.model.ForecastWindowException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
