@@ -26,13 +26,13 @@ interface ForecastRepository extends JpaRepository<ForecastEntity, Long> {
                 fetched_at
             )
             values (
-                :latitude, 
-                :longitude, 
-                :eventTime, 
-                :airTemperature, 
-                :windSpeed, 
-                :forecastFor, 
-                :expiresAt, 
+                :latitude,
+                :longitude,
+                :eventTime,
+                :airTemperature,
+                :windSpeed,
+                :forecastFor,
+                :expiresAt,
                 now()
             )
             on conflict (latitude, longitude, event_time) do update set
